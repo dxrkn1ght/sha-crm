@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %} School CRM - Dashboard {% endblock %}
+
+{% block content %}
+<main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-8">
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-sm text-gray-600">Total Students</p>
+                    <h3 class="text-3xl font-bold mt-2">{{ total_students }}</h3>
+                </div>
+                <div class="p-3 bg-blue-50 rounded-lg">
+                    <i class="bi bi-people text-blue-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-sm text-gray-600">Total Teachers</p>
+                    <h3 class="text-3xl font-bold mt-2">{{ total_teachers }}</h3>
+                </div>
+                <div class="p-3 bg-green-50 rounded-lg">
+                    <i class="bi bi-person-badge text-green-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-sm text-gray-600">Active Groups</p>
+                    <h3 class="text-3xl font-bold mt-2">{{ total_groups }}</h3>
+                </div>
+                <div class="p-3 bg-purple-50 rounded-lg">
+                    <i class="bi bi-collection text-purple-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-sm text-gray-600">Total Subjects</p>
+                    <h3 class="text-3xl font-bold mt-2">{{ total_subjects }}</h3>
+                </div>
+                <div class="p-3 bg-orange-50 rounded-lg">
+                    <i class="bi bi-book text-orange-600"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="text-lg font-semibold mb-4">Student Enrollment Trends</h3>
+            <canvas id="enrollmentChart" height="300"></canvas>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="text-lg font-semibold mb-4">Subject Distribution</h3>
+            <canvas id="subjectChart" height="300"></canvas>
+        </div>
+    </div>
+
+    <!-- Other content like Recent Activity -->
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Ensure generateColors is defined
+    function generateColors(count) {
+        const predefinedColors = [
+            '#2563eb', '#9333ea', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'
+        ];
+        const colors = [];
+        for (let i = 0; i < count; i++) {
+            colors.push(predefinedColors[i % predefinedColors.length]);
+        }
+        return colors;
+    }
+
+    // Chart.js data
+    const enrollmentData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [
+            {
+                label: '2025 Enrollments',
+                data: {{ enrollment_counts|safe }},
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                fill: true,
+                tension: 0.4
+            }
+        ]
+    };
+
+    const subjectData = {
+        labels: {{ subject_names|safe }},
+        datasets: [{
+            data: {{ subject_teachers_counts|safe }},
+            backgroundColor: generateColors({{ subject_names|length }})
+        }]
+    };
+
+    // Initialize enrollment chart
+    const enrollmentChart = new Chart(document.getElementById('enrollmentChart'), {
+        type: 'line',
+        data: enrollmentData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' }
+            },
+            scales: {
+                y: { beginAtZero: true },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // Initialize subject chart
+    const subjectChart = new Chart(document.getElementById('subjectChart'), {
+        type: 'doughnut',
+        data: subjectData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'right' }
+            }
+        }
+    });
+</script>
+{% endblock %}

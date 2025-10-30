@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}School CRM - Student Details{% endblock %}
+
+{% block content %}
+<main class="flex-1 overflow-y-auto p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="mb-8 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <img src="{{ student.photo.url }}" alt="Student" class="w-16 h-16 rounded-full">
+                <div>
+                    <h1 class="text-2xl font-bold">{{ student.first_name }} {{ student.last_name }}</h1>
+                    <p class="text-gray-500">Student ID: STU-00{{ student.id }}</p>
+                </div>
+            </div>
+            <!-- Button Container (updated) -->
+            <div class="flex space-x-4">
+                <!-- Edit Button -->
+                <a href="{% url 'students:update' student.id %}" class="px-4 py-2 border rounded-lg hover:bg-gray-50">
+                    <i class="bi bi-pencil"></i>
+                    <span class="ml-2">Edit</span>
+                </a>
+
+                <!-- Delete Button -->
+                <a href="{% url 'students:delete' student.id %}" class="px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100">
+                    <i class="bi bi-trash"></i>
+                    <span class="ml-2">Delete</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Student Info -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Basic Info -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6">
+                <h2 class="text-lg font-semibold mb-4">Personal Information</h2>
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm text-gray-500">First Name</label>
+                        <p class="text-gray-900">{{ student.first_name }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-500">Last Name</label>
+                        <p class="text-gray-900">{{ student.last_name }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-500">Date of Birth</label>
+                        <p class="text-gray-900">{{ student.dob }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-500">Gender</label>
+                        <p class="text-gray-900">{{ student.get_gender_display }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-500">Email</label>
+                        <p class="text-gray-900">{{ student.email }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-500">Phone</label>
+                        <p class="text-gray-900">{{ student.phone }}</p>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm text-gray-500">Address</label>
+                        <p class="text-gray-900">{{ student.address }}</p>
+                    </div>
+                </div>
+
+                <h2 class="text-lg font-semibold mt-8 mb-4">Parent/Guardian Information</h2>
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm text-gray-500">Parent Name</label>
+                        <p class="text-gray-900">{{ student.parent_name }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-500">Relationship</label>
+                        <p class="text-gray-900">{{ student.relationship }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-500">Parent Phone</label>
+                        <p class="text-gray-900">{{ student.parent_phone }}</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-500">Parent Email</label>
+                        <p class="text-gray-900">{{ student.parent_email }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Academic Info -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold mb-4">Academic Information</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-500">Grade</label>
+                            <p class="text-gray-900">{{ student.get_grade_level_display }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-500">Group</label>
+                            <p class="text-gray-900">{{ student.group }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-500">Enrollment Date</label>
+                            <p class="text-gray-900">{{ student.enrollment_date }}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-500">Status</label>
+                            <span class="px-2 py-1 rounded-full text-sm
+                                {% if student.status == 'active' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                                {{ student.get_status_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+
+
