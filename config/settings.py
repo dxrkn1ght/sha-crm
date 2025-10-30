@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-b%^c(ox-qrd8q!fbu+u56w^r7y1537k_@@f+pty#4qft+xkbon
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1', 'web-production-76758.up.railway.app']
+ALLOWED_HOSTS = ['web-production-76758.up.railway.app', 'localhost', '127.0.0.1']
 
 
 
@@ -57,6 +57,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'config.urls'
 
