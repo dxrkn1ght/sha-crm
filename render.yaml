@@ -5,11 +5,11 @@ services:
     plan: free
     buildCommand: |
       pip install -r requirements.txt
-      python manage.py collectstatic --noinput
-    startCommand: gunicorn sha_crm.wsgi
+      python manage.py collectstatic --no-input
+    startCommand: gunicorn config.wsgi
     envVars:
       - key: DJANGO_SETTINGS_MODULE
-        value: config.settings
+        value: sha_crm.settings
       - key: PYTHON_VERSION
         value: 3.10
       - key: SECRET_KEY
